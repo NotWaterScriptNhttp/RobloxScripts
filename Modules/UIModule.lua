@@ -32,10 +32,11 @@ end
 ------------UIlib-----------
 ----------------------------
 
-function module.CreateLabel(parent,pos,size,text,spoiler)
+function module.CreateLabel(parent,pos,size,text,spoiler,onSpoilerClick)
 	assert(typeof(parent) == "Instance","Argument #1 must be 'Instance', got '"..typeof(parent).."'")
 	assert((typeof(pos) == "UDim2" and typeof(size) == "UDim2") == true,"Pos or Size expected 'UDim2', got (Pos: "..typeof(pos)..", Size: "..typeof(size)..")")
-	assert(typeof(text) == "string","Argument #4 ")
+	assert(typeof(text) == "string","Argument #4 expected 'string', got '"..typeof(text).."'")
+	
 	local LabelBackground = Instance.new("Frame",parent)
 	LabelBackground.Size = size
 	LabelBackground.Position = pos
@@ -73,7 +74,12 @@ function module.CreateLabel(parent,pos,size,text,spoiler)
 		Spoiler.InputBegan:Connect(function(key)
 			if key.UserInputType == Enum.UserInputType.MouseButton1 then
 				active = not active
-				SpoilerLabel.Visible = not SpoilerLabel.Visible
+				SpoilerLabel.Visible = not active
+				
+				if onSpoilerClick then
+					onSpoilerClick(active)
+				end
+				
 				if active == true then
 					Spoiler.BackgroundTransparency = 0.7
 					Spoiler.BackgroundColor3 = Color3.new(1,1,1)
