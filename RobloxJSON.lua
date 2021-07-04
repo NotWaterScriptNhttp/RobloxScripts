@@ -15,6 +15,9 @@ function find(tbl,thing)
     return false
 end
 
+local Loaded = {}
+local Template = {}
+
 function mdl.SaveConfig(Config)
     local BasicTypes = {
         "string",
@@ -97,6 +100,41 @@ function mdl.LoadConfig(JSONConfig)
     end
 
     return GO(Config)
+end
+
+function mdl.LoadTemplate(tmp)
+    Template = tmp
+end
+
+function mdl.Get(val,...) -- the ... are just indexes
+    local Indexes = {...}
+
+    if #Indexes == 1 then
+        local v = Loaded[Indexes[1]][val]
+        return v == nil and Template[Indexes[1]][val] or v
+    end
+
+    local default = Template
+
+    for _,v in ipairs({...}) do
+        default = default[v]
+    end
+    default = default[val]
+
+    local function GO()
+        local path = Loaded
+
+        for _,v in ipairs(Indexes) do
+            if path[v] == nil then
+                return default
+            end
+            path = path[v]
+        end
+
+        return path[val] == nil and default or path[val]
+    end
+
+    return GO()
 end
 
 return mdl
