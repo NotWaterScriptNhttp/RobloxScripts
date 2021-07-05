@@ -99,7 +99,8 @@ function mdl.LoadConfig(JSONConfig)
         return Ret
     end
 
-    return GO(Config)
+    Loaded = GO(Config)
+    return Loaded
 end
 
 function mdl.LoadTemplate(tmp)
