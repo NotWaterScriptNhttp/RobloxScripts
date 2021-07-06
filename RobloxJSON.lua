@@ -140,4 +140,65 @@ function mdl.Get(val,...) -- the ... are just indexes {Returns [Value: any, isTe
     return vl,is
 end
 
+function mdl.Set(args,...)
+    local Indexes = {...}
+
+    local mt = {}
+
+    local TemplateChildren = Template
+
+    for _,v in ipairs(Indexes) do
+        TemplateChildren = TemplateChildren[v]
+    end
+
+    local function GetFromTemplatePath(thingInIndexes)
+        local p = Template
+        for _,v in ipairs(Indexes) do
+            if v == thingInIndexes then
+                return p[thingInIndexes]
+            end
+            p = p[v]
+        end
+        return "INVALID"
+    end
+
+    local function FillMissing() -- Fills the missing part of the Loaded table from Template aka default values
+        local conf = Loaded
+        for _,v in ipairs(Indexes) do
+            if conf[v] == nil then
+                conf[v] = assert(GetFromTemplatePath(v) ~= "INVALID", "FillMissing failed! {Error Type: Critical}")
+            end
+            conf = conf[v]
+        end
+    end
+
+
+    local function SetValue(index,value)
+        local p = Loaded
+        for _,v in ipairs(Indexes) do
+            p = p[v]
+        end
+        p[index] = value
+    end
+
+
+    FillMissing()
+
+
+    setmetatable(mt, {
+        __newindex = function (self,index,value)
+            SetValue(index, value)
+        end,
+        __call = function (self,index,value)
+            SetValue(index, value)
+        end
+    })
+
+    return mt
+end
+
+function mdl.GetLoadedConfig()
+    return Loaded
+end
+
 return mdl
