@@ -111,7 +111,7 @@ function mdl.Get(val,...) -- the ... are just indexes {Returns [Value: any, isTe
     local Indexes = {...}
 
     if #Indexes == 1 then
-        local v = Loaded[Indexes[1]][val]
+        local v = Loaded == nil and nil or (Loaded[Indexes[1]] == nil and nil or Loaded[Indexes[1]][val])
         return v == nil and Template[Indexes[1]][val], true or v, false
     end
 
