@@ -201,4 +201,10 @@ function mdl.GetLoadedConfig()
     return Loaded
 end
 
+function mdl.SetLoadedAsTemplate()
+    if Template ~= nil then
+        Loaded = Template
+    end
+end
+
 return mdl
