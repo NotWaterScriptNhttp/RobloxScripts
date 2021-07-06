@@ -107,12 +107,12 @@ function mdl.LoadTemplate(tmp)
     Template = tmp
 end
 
-function mdl.Get(val,...) -- the ... are just indexes
+function mdl.Get(val,...) -- the ... are just indexes {Returns [Value: any, isTemplate: boolean]}
     local Indexes = {...}
 
     if #Indexes == 1 then
         local v = Loaded[Indexes[1]][val]
-        return v == nil and Template[Indexes[1]][val] or v
+        return v == nil and Template[Indexes[1]][val], true or v, false
     end
 
     local default = Template
@@ -127,15 +127,17 @@ function mdl.Get(val,...) -- the ... are just indexes
 
         for _,v in ipairs(Indexes) do
             if path[v] == nil then
-                return default
+                return default, true
             end
             path = path[v]
         end
 
-        return path[val] == nil and default or path[val]
+        return path[val] == nil and default, true or path[val], false
     end
 
-    return GO()
+    local vl,is = GO() -- vl: Value, is: isTemplate
+
+    return vl,is
 end
 
 return mdl
