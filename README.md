@@ -14,6 +14,7 @@ List of all Functions:
 - hookMetatable -- this will return the oldFunction for the hooked metamethod supports the hookMetamethod on synapse {metaMethod: string, func: function}
 - Request -- makes http request easier to make on all exploits {data: table}
 - LoadURL -- is just loadstring with game:HttpGet so nothing that is compatibillity related {url: string}
+- LoadLocal -- loads a local file with loadstring {file: string}
 - LocalPlayer (not a function) -- returns the LocalPlayer
 - AddToGlobal -- add your function to the exploit's enviroment with the given name {name: string,data: any}
 
