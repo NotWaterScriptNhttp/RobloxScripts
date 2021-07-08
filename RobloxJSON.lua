@@ -1,3 +1,7 @@
+local Ver = "1.0.0"
+
+warn("ConfigLib Version",Ver,"Loaded!")
+
 local mdl = {}
 
 function startsWith(str,match)
@@ -107,37 +111,28 @@ function mdl.LoadTemplate(tmp)
     Template = tmp
 end
 
-function mdl.Get(val,...) -- the ... are just indexes {Returns [Value: any, isTemplate: boolean]}
-    local Indexes = {...}
+function mdl.Get(...) -- the ... are just indexes {Returns [Tbl: table]}
+    local args = {...}
 
-    if #Indexes == 1 then
-        local v = Loaded == nil and nil or (Loaded[Indexes[1]] == nil and nil or Loaded[Indexes[1]][val])
-        return v == nil and Template[Indexes[1]][val], true or v, false
-    end
+    local ret = Loaded == nil and Template or Loaded
 
     local default = Template
 
-    for _,v in ipairs({...}) do
+    for _,v in ipairs(args) do
+        if default[v] == nil then
+            error("INVALID_INDEX_"..v:upper())
+        end
         default = default[v]
     end
-    default = default[val]
 
-    local function GO()
-        local path = Loaded
-
-        for _,v in ipairs(Indexes) do
-            if path[v] == nil then
-                return default, true
-            end
-            path = path[v]
+    for _,v in ipairs(args) do
+        if ret[v] == nil then
+            return default
         end
-
-        return path[val] == nil and default, true or path[val], false
+        ret = ret[v]
     end
 
-    local vl,is = GO() -- vl: Value, is: isTemplate
-
-    return vl,is
+    return ret
 end
 
 function mdl.Set(args,...)
