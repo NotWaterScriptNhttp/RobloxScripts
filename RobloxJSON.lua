@@ -138,6 +138,10 @@ end
 function mdl.Set(args,...)
     local Indexes = {...}
 
+    if typeof(args) == "string" then
+        Indexes = {args,...}
+    end
+
     local mt = {}
 
     local TemplateChildren = Template
