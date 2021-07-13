@@ -119,6 +119,11 @@ function lib.new()
     function mdl.Get(...) -- the ... are just indexes {Returns [Tbl: table]}
         local args = {...}
 
+        if (#args == 1 and typeof(args[1]) == "string" and args[1] == "") or #args == 0 then
+            local v = #Loaded == 0 and Template or Loaded
+            return v
+        end
+
         local ret = Loaded == nil and Template or Loaded
 
         local default = Template
@@ -143,6 +148,10 @@ function lib.new()
     function mdl.Set(args,...)
         local Indexes = {...}
 
+        if typeof(args) == "string" then
+            Indexes = {args,...}
+        end
+
         local mt = {}
 
         local TemplateChildren = Template
@@ -163,22 +172,41 @@ function lib.new()
         end
 
         local function FillMissing() -- Fills the missing part of the Loaded table from Template aka default values
-            local conf = Loaded
-            for _,v in ipairs(Indexes) do
-                if conf[v] == nil then
-                    conf[v] = assert(GetFromTemplatePath(v) ~= "INVALID", "FillMissing failed! {Error Type: Critical}")
+            if (#Indexes > 0 and not (Indexes[1] == "")) then
+                local conf = Loaded
+                for _,v in ipairs(Indexes) do
+                    if conf[v] == nil then
+                        assert(GetFromTemplatePath(v) ~= "INVALID", "FillMissing failed! {Error Type: Critical}")
+                        conf[v] = GetFromTemplatePath(v)
+                    end
+                    conf = conf[v]
                 end
-                conf = conf[v]
+            else
+                for k,v in pairs(Template) do
+                    if Loaded[k] == nil then
+                        warn("(ConfigLib FillMissing)","Setting ["..k.."] to {type: "..typeof(v)..", value: "..tostring(v).."}")
+                        Loaded[k] = v
+                    end
+                end
             end
         end
 
 
-        local function SetValue(index,value)
-            local p = Loaded
-            for _,v in ipairs(Indexes) do
-                p = p[v]
+        local function SetValue(index,value)   
+            warn("#1 ARG",Indexes[1])
+            if (#Indexes > 0 and not (Indexes[1] == "")) then
+                warn("Wrong?")
+                local p = Loaded
+                for _,v in ipairs(Indexes) do
+                    p = p[v]
+                end
+                p[index] = value
+                return
+            else
+                warn("(ConfigLib Set Loaded Check)",Loaded)
+                --Loaded[index] = value
+                return
             end
-            p[index] = value
         end
 
 
