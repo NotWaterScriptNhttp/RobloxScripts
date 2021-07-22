@@ -15,6 +15,8 @@ List of all Functions:
 - Request -- makes http request easier to make on all exploits {data: table}
 - LoadURL -- is just loadstring with game:HttpGet so nothing that is compatibillity related {url: string}
 - LoadLocal -- loads a local file with loadstring {file: string}
+- OnDisconnect -- is called when some one leave's the game {func: function}
+- Exists -- is used to check if a file exists {string: path/file}
 - LocalPlayer (not a function) -- returns the LocalPlayer
 - AddToGlobal -- add your function to the exploit's enviroment with the given name {name: string,data: any}
 
