@@ -129,6 +129,9 @@ function lib.new()
         local default = Template
 
         for _,v in ipairs(args) do
+            if v == "" then
+                break
+            end
             if default[v] == nil then
                 error("INVALID_INDEX_"..v:upper())
             end
@@ -136,6 +139,9 @@ function lib.new()
         end
 
         for _,v in ipairs(args) do
+            if v == "" then
+                break
+            end
             if ret[v] == nil then
                 return default
             end
