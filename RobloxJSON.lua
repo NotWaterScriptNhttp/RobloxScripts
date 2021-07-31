@@ -199,9 +199,9 @@ function lib.new()
 
 
         local function SetValue(index,value)   
-            warn("#1 ARG",Indexes[1])
+            --warn("#1 ARG",Indexes[1])
             if (#Indexes > 0 and not (Indexes[1] == "")) then
-                warn("Wrong?")
+                --warn("Wrong?")
                 local p = Loaded
                 for _,v in ipairs(Indexes) do
                     p = p[v]
