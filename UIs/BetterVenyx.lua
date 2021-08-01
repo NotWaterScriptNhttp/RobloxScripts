@@ -1070,9 +1070,9 @@ do
 
 		if canChangeModes then
 			keybind.MouseButton2Click:Connect(function()
-				warn("Shit head")
 				local ModeBox = Instance.new("Frame",keybind)
 				local mouse = game.Players.LocalPlayer:GetMouse()
+				warn(mouse.X,mouse.Y)
 				ModeBox.Position = UDim2.new(0,mouse.X,0,mouse.Y)
 			end)
 		end
