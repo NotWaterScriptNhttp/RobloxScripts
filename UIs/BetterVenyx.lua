@@ -966,7 +966,7 @@ do
 		return textbox
 	end
 	
-	function section:addKeybind(title, default, callback, changedCallback,canChangeModes)
+	function section:addKeybind(title, default, callback, changedCallback,canChangeModes,defaultMode)
 		local keybind = utility:Create("ImageButton", {
 			Name = "Keybind",
 			Parent = self.container,
@@ -1068,11 +1068,13 @@ do
 			end
 		end)
 
-		keybind.MouseButton2Click:Connect(function()
-			local ModeBox = Instance.new("Frame",keybind)
-			local mouse = game.Players.LocalPlayer:GetMouse()
-			ModeBox.Position = UDim2.new(0,mouse.X,0,mouse.Y)
-		end)
+		if canChangeModes == true then
+			keybind.MouseButton2Click:Connect(function()
+				local ModeBox = Instance.new("Frame",keybind)
+				local mouse = game.Players.LocalPlayer:GetMouse()
+				ModeBox.Position = UDim2.new(0,mouse.X,0,mouse.Y)
+			end)
+		end
 		
 		return keybind
 	end
