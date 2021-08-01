@@ -1068,8 +1068,9 @@ do
 			end
 		end)
 
-		if canChangeModes == true then
+		if canChangeModes then
 			keybind.MouseButton2Click:Connect(function()
+				warn("Shit head")
 				local ModeBox = Instance.new("Frame",keybind)
 				local mouse = game.Players.LocalPlayer:GetMouse()
 				ModeBox.Position = UDim2.new(0,mouse.X,0,mouse.Y)
@@ -2224,8 +2225,9 @@ do
 		if bind.connection then
 			bind.connection = bind.connection:UnBind()
 		end
-			
-		if key then
+		
+		if key == "" then
+		elseif key then
 			self.binds[keybind].connection = utility:BindToKey(key, bind.callback)
 			text.Text = key.Name
 		else
