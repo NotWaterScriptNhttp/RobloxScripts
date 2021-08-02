@@ -1033,6 +1033,13 @@ do
 		self.binds[keybind] = {callback = function()
 			animate()
 			
+			if callback and canChangeModes == true then
+				local bind = self.binds[keybind]
+				callback(bind.state,bind.mode,function(...)
+					self:updateKeybind(keybind, ...)
+				end)
+			end
+
 			if callback then
 				callback(function(...)
 					self:updateKeybind(keybind, ...)
@@ -1070,10 +1077,35 @@ do
 
 		if canChangeModes then
 			keybind.MouseButton2Click:Connect(function()
-				local ModeBox = Instance.new("Frame",keybind)
 				local mouse = game.Players.LocalPlayer:GetMouse()
-				warn(mouse.X,mouse.Y)
-				ModeBox.Position = UDim2.new(0,mouse.X,0,mouse.Y)
+				local ModeBox = utility:Create("Frame",{
+					Name = "ModeBox",
+					Parent = keybind,
+					BorderSizePixel = 0,
+					BackgroundColor3 = themes.Background,
+					Position = UDim2.new(0,mouse.X,0,mouse.Y),
+					Size = UDim2.new(0,110,0,120)
+				},{
+					utility:Create("UIGridLayout",{
+						Name = "GridLayout",
+						CellPadding = UDim2.new(0,5,0,10)
+						CellSize = UDim2.new(0,80,0,25),
+						HorizontalAlignment = Enum.HorizontalAlignment.Center,
+						VerticalAlignment = Enum.VerticalAlignment.Center
+					})
+				})
+
+				local holdMode = utility:Create("ImageButton",{
+					Name = "HoldModeBtn",
+					Parent = ModeBox,
+					BackgroundTransparency = 1,
+					BorderSizePixel = 0,
+					Image = "rbxassetid://5028857472",
+					ImageColor3 = themes.DarkContrast,
+					TextColor3 = themes.TextColor,
+					Text = "Hold",
+					TextSize = 20
+				})
 			end)
 		end
 		
@@ -2212,7 +2244,7 @@ do
 		
 	end
 	
-	function section:updateKeybind(keybind, title, key)
+	function section:updateKeybind(keybind, title, key, modeBox, mode)
 		keybind = self:getModule(keybind)
 		
 		local text = keybind.Button.Text
@@ -2233,6 +2265,8 @@ do
 		else
 			text.Text = "None"
 		end
+
+
 	end
 	
 	function section:updateColorPicker(colorpicker, title, color)
