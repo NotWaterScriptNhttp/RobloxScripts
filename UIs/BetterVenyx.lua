@@ -1075,7 +1075,11 @@ do
 			end
 		end)
 
-		if canChangeModes then
+		if canChangeModes == true then
+
+			self.binds[keybind].mode = defaultMode
+			self.binds[keybind].state = false
+
 			keybind.MouseButton2Click:Connect(function()
 				local mouse = game.Players.LocalPlayer:GetMouse()
 				local ModeBox = utility:Create("Frame",{
@@ -1094,7 +1098,7 @@ do
 						VerticalAlignment = Enum.VerticalAlignment.Center
 					})
 				})
-
+				--[[
 				local holdMode = utility:Create("ImageButton",{
 					Name = "HoldModeBtn",
 					Parent = ModeBox,
@@ -1106,6 +1110,7 @@ do
 					Text = "Hold",
 					TextSize = 20
 				})
+				]]
 			end)
 		end
 		
@@ -2265,8 +2270,6 @@ do
 		else
 			text.Text = "None"
 		end
-
-
 	end
 	
 	function section:updateColorPicker(colorpicker, title, color)
