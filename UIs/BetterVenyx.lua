@@ -63,7 +63,7 @@ local function addMode(ModeBox,modeName,callback)
 	Button.Image = "rbxassetid://5028857472"
 	Button.BorderSizePixel = 0
 	Button.ImageColor3 = themes.DarkContrast
-	Button.ZIndex = 1
+	Button.ZIndex = 3
 
 	local ButtonText = Instance.new("TextLabel",Button)
 	ButtonText.BackgroundTransparency = 1
@@ -72,7 +72,7 @@ local function addMode(ModeBox,modeName,callback)
 	ButtonText.TextColor3 = themes.TextColor
 	ButtonText.TextScaled = true
 	ButtonText.Size = UDim2.new(1,0,1,0)
-	ButtonText.ZIndex = 1
+	ButtonText.ZIndex = 3
 	ButtonText.Font = Enum.Font.GothamBold
 
 	Button.MouseButton1Click:Connect(callback or function() end)
@@ -1125,7 +1125,7 @@ do
 				ModeBox.ScaleType = Enum.ScaleType.Slice
 				ModeBox.SliceCenter = Rect.new(100,100,100,100)
 				ModeBox.SliceScale = 0.04
-				ModeBox.ZIndex = 1
+				ModeBox.ZIndex = 3
 
 				local Layout = Instance.new("UIGridLayout",ModeBox)
 				Layout.Name = "GridLayout"
