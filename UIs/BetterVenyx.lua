@@ -1092,7 +1092,7 @@ do
 				},{
 					utility:Create("UIGridLayout",{
 						Name = "GridLayout",
-						CellPadding = UDim2.new(0,5,0,10)
+						CellPadding = UDim2.new(0,5,0,10),
 						CellSize = UDim2.new(0,80,0,25),
 						HorizontalAlignment = Enum.HorizontalAlignment.Center,
 						VerticalAlignment = Enum.VerticalAlignment.Center
