@@ -261,6 +261,8 @@ local library = {} -- main
 local page = {}
 local section = {}
 
+local ScreenGui = nil
+
 do
 	library.__index = library
 	page.__index = page
@@ -352,6 +354,8 @@ do
 		utility:InitializeKeybind()
 		utility:DraggingEnabled(container.Main.TopBar, container.Main)
 		
+		ScreenGui = container
+
 		return setmetatable({
 			container = container,
 			pagesContainer = container.Main.Pages.Pages_Container,
@@ -1107,12 +1111,11 @@ do
 
 				warn("Clicked")
 
-				local ModeBox = Instance.new("ImageLabel",self.container.Parent)
+				local ModeBox = Instance.new("ImageLabel",ScreenGui)
 				ModeBox.Name = "ModeBox"
 				ModeBox.BorderSizePixel = 0
 				ModeBox.BackgroundColor3 = themes.Background
 				ModeBox.Position = UDim2.new(0,mouse.X,0,mouse.Y)
-				warn(mouse.x,mouse.y)
 				ModeBox.Size = UDim2.new(0,110,0,160)
 				ModeBox.Image = "rbxassetid://3570695787"
 				ModeBox.ImageColor3 = themes.Background
