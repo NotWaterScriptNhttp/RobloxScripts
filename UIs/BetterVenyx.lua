@@ -1112,6 +1112,7 @@ do
 				ModeBox.BorderSizePixel = 0
 				ModeBox.BackgroundColor3 = themes.Background
 				ModeBox.Position = UDim2.new(0,mouse.x,0,mouse.y)
+				warn(mouse.x,mouse.y)
 				ModeBox.Size = UDim2.new(0,110,0,160)
 				ModeBox.Image = "rbxassetid://3570695787"
 				ModeBox.ImageColor3 = themes.Background
