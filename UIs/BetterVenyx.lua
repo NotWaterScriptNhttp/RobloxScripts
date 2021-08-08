@@ -56,6 +56,27 @@ function betterRemove(tbl,value)
 	end
 end
 
+local function addMode(ModeBox,modeName,callback)
+	local Button = Instance.new("ImageButton",ModeBox)
+	Button.Name = modeName.."ModeBtn"
+	Button.BackgroundTransparency = 1
+	Button.Image = "rbxassetid://5028857472"
+	Button.BorderSizePixel = 0
+	Button.ImageColor3 = themes.DarkContrast
+
+	local ButtonText = Instance.new("TextLabel",Button)
+	ButtonText.BackgroundTransparency = 1
+	ButtonText.BorderSizePixel = 0
+	ButtonText.Text = modeName
+	ButtonText.TextColor3 = themes.TextColor
+	ButtonText.TextSize = 20
+	ButtonText.Size = UDim2.new(1,0,1,0)
+
+	Button.MouseButton1Click:Connect(callback or function() end)
+
+	return Button
+end
+
 do
 	function utility:Create(instance, properties, children)
 		local object = Instance.new(instance)
@@ -1040,8 +1061,12 @@ do
 				end)
 			end
 
-			if callback then
+			if callback and not canChangeModes then
 				callback(function(...)
+					self:updateKeybind(keybind, ...)
+				end)
+			elseif callback and canChangeModes then
+				callback({state = self.binds[keybind].state,mode = self.binds[keybind].mode},function(...)
 					self:updateKeybind(keybind, ...)
 				end)
 			end
@@ -1055,62 +1080,77 @@ do
 			
 			animate()
 			
-			if self.binds[keybind].connection then -- unbind
-				return self:updateKeybind(keybind)
-			end
+			text.Text = "..."
+				
+			local key = utility:KeyPressed()
 			
-			if text.Text == "None" then -- new bind
-				text.Text = "..."
-				
-				local key = utility:KeyPressed()
-				
-				self:updateKeybind(keybind, nil, key.KeyCode)
-				animate()
-				
-				if changedCallback then
-					changedCallback(key, function(...)
-						self:updateKeybind(keybind, ...)
-					end)
-				end
+			self:updateKeybind(keybind, nil, key.KeyCode)
+			animate()
+			
+			if changedCallback then
+				changedCallback(key, function(...)
+					self:updateKeybind(keybind, ...)
+				end)
 			end
 		end)
 
 		if canChangeModes == true then
 
-			self.binds[keybind].mode = defaultMode
-			self.binds[keybind].state = false
+			local bind = self.binds[keybind]
+
+			bind.mode = defaultMode
+			bind.state = false
+			bind.togglestate = nil
 
 			keybind.MouseButton2Click:Connect(function()
 				local mouse = game.Players.LocalPlayer:GetMouse()
-				local ModeBox = utility:Create("Frame",{
-					Name = "ModeBox",
-					Parent = keybind,
-					BorderSizePixel = 0,
-					BackgroundColor3 = themes.Background,
-					Position = UDim2.new(0,mouse.X,0,mouse.Y),
-					Size = UDim2.new(0,110,0,120)
-				},{
-					utility:Create("UIGridLayout",{
-						Name = "GridLayout",
-						CellPadding = UDim2.new(0,5,0,10),
-						--CellSize = UDim2.new(0,80,0,25),
-						HorizontalAlignment = Enum.HorizontalAlignment.Center,
-						VerticalAlignment = Enum.VerticalAlignment.Center
-					})
-				})
-				--[[
-				local holdMode = utility:Create("ImageButton",{
-					Name = "HoldModeBtn",
-					Parent = ModeBox,
-					BackgroundTransparency = 1,
-					BorderSizePixel = 0,
-					Image = "rbxassetid://5028857472",
-					ImageColor3 = themes.DarkContrast,
-					TextColor3 = themes.TextColor,
-					Text = "Hold",
-					TextSize = 20
-				})
-				]]
+
+				warn("Clicked")
+
+				local ModeBox = Instance.new("ImageLabel",keybind)
+				ModeBox.Name = "ModeBox"
+				ModeBox.BorderSizePixel = 0
+				ModeBox.BackgroundColor3 = themes.Background
+				ModeBox.Position = UDim2.new(0,mouse.x,0,mouse.y)
+				ModeBox.Size = UDim2.new(0,110,0,160)
+				ModeBox.Image = "rbxassetid://3570695787"
+				ModeBox.ImageColor3 = themes.Background
+				ModeBox.ScaleType = Enum.ScaleType.Slice
+				ModeBox.SliceCenter = Rect.new(100,100,100,100)
+				ModeBox.SliceScale = 0.04
+
+				local Layout = Instance.new("UIGridLayout",ModeBox)
+				Layout.Name = "GridLayout"
+				Layout.CellPadding = UDim2.new(0,5,0,10)
+				Layout.CellSize = UDim2.new(0,80,0,25)
+				Layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+				Layout.VerticalAlignment = Enum.VerticalAlignment.Center
+
+				
+
+				addMode(ModeBox,"Hold",function()
+					print("Pressed hold mode")
+					bind.mode = "hold"
+					bind.state = false
+				end)
+
+				addMode(ModeBox,"Toggle",function()
+					bind.mode = "toggle"
+					bind.state = typeof(bind.togglestate) == "boolean" and bind.togglestate
+				end)
+
+				addMode(ModeBox,"Always on",function()
+					bind.mode = "always"
+					bind.state = true
+				end)
+
+				addMode(ModeBox,"None",function()
+					if bind.connection then
+						self:updateKeybind(keybind)
+					end
+					bind.mode = "none"
+					bind.state = false
+				end)
 			end)
 		end
 		
@@ -2417,7 +2457,7 @@ do
 		end
 	end
 
-	function section:updateMultiDropdown(dropdown, originaltitle, title, list,dropdownInfo, callback)
+	function section:updateMultiDropdown(dropdown, originaltitle, title, list, dropdownInfo, callback)
 		dropdown = self:getModule(dropdown)
 		dropdownInfo = (dropdownInfo == nil and {Text = title,Selected = {}} or dropdownInfo)
 		
