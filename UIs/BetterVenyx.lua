@@ -1107,7 +1107,7 @@ do
 
 				warn("Clicked")
 
-				local ModeBox = Instance.new("ImageLabel",keybind)
+				local ModeBox = Instance.new("ImageLabel",self.container.Parent)
 				ModeBox.Name = "ModeBox"
 				ModeBox.BorderSizePixel = 0
 				ModeBox.BackgroundColor3 = themes.Background
@@ -1125,8 +1125,6 @@ do
 				Layout.CellSize = UDim2.new(0,80,0,25)
 				Layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 				Layout.VerticalAlignment = Enum.VerticalAlignment.Center
-
-				
 
 				addMode(ModeBox,"Hold",function()
 					print("Pressed hold mode")
