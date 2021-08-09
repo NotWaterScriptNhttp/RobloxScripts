@@ -1210,13 +1210,12 @@ do
 					bind.mode = "none"
 					bind.state = false
 				end)
-				--[[
+
 				if utility:MousePressed() then
 					print("Mouse Destroy")
 					wait(.5)
 					ModeBox:Destroy()
 				end
-				]]
 			end)
 		end
 		
