@@ -57,14 +57,7 @@ function betterRemove(tbl,value)
 end
 
 local function addMode(ModeBox,modeName,callback)
-
-	local oldca = callback or function() end
-
-	callback = function()
-		oldca()
-		print("Clicked on",modeName)
-		ModeBox:Destroy()
-	end
+	callback = callback or function() end
 
 	local Button = Instance.new("ImageButton",ModeBox)
 	Button.Name = modeName.."ModeBtn"
@@ -84,7 +77,12 @@ local function addMode(ModeBox,modeName,callback)
 	ButtonText.ZIndex = 3
 	ButtonText.Font = Enum.Font.GothamBold
 
-	Button.MouseButton1Click:Connect(callback)
+	Button.MouseButton1Click:Connect(function()
+		callback()
+
+		wait(.1)
+		ModeBox:Destroy()
+	end)
 
 	return Button
 end
@@ -1193,27 +1191,32 @@ do
 				end)
 
 				addMode(ModeBox,"Toggle",function()
+					print("Mode pressed")
 					bind.mode = "toggle"
 					bind.state = typeof(bind.togglestate) == "boolean" and bind.togglestate
 				end)
 
 				addMode(ModeBox,"Always on",function()
+					print("Mode pressed")
 					bind.mode = "always"
 					bind.state = true
 				end)
 
 				addMode(ModeBox,"None",function()
+					print("Mode pressed")
 					if bind.connection then
 						self:updateKeybind(keybind)
 					end
 					bind.mode = "none"
 					bind.state = false
 				end)
-
+				--[[
 				if utility:MousePressed() then
+					print("Mouse Destroy")
 					wait(.5)
 					ModeBox:Destroy()
 				end
+				]]
 			end)
 		end
 		
