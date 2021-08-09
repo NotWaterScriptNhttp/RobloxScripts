@@ -62,6 +62,7 @@ local function addMode(ModeBox,modeName,callback)
 
 	callback = function()
 		oldca()
+		print("Clicked on",modeName)
 		ModeBox:Destroy()
 	end
 
@@ -1139,6 +1140,26 @@ do
 			bind.mode = defaultMode
 			bind.state = false
 			bind.togglestate = nil
+			bind.BEGAN = input.InputBegan:Connect(function(key)
+				if key.KeyCode == bind.currentKey then
+					if bind.mode == "toggle" then
+						bind.togglestate = not bind.togglestate
+						bind.state = bind.togglestate
+					elseif bind.mode == "hold" then
+						bind.state = true
+					end
+					bind.callback()
+				end
+			end)
+
+			bind.ENDED = input.InputEnded:Connect(function(key)
+				if key.KeyCode == bind.currentKey then
+					if bind.mode == "hold" then
+						bind.state = false
+					end
+					bind.callback()
+				end
+			end)
 
 			keybind.MouseButton2Click:Connect(function()
 				local mouse = game.Players.LocalPlayer:GetMouse()
@@ -2330,7 +2351,7 @@ do
 		
 	end
 	
-	function section:updateKeybind(keybind, title, key, modeBox, mode)
+	function section:updateKeybind(keybind, title, key)
 		keybind = self:getModule(keybind)
 		
 		local text = keybind.Button.Text
@@ -2346,6 +2367,7 @@ do
 		
 		if key == "" then
 		elseif key then
+			self.binds[keybind].currentKey = key
 			self.binds[keybind].connection = utility:BindToKey(key, bind.callback)
 			text.Text = key.Name
 		else
