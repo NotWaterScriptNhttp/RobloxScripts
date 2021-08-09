@@ -1211,6 +1211,7 @@ do
 				end)
 
 				if utility:MousePressed() then
+					wait(.5)
 					ModeBox:Destroy()
 				end
 			end)
