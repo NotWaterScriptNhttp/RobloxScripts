@@ -57,6 +57,14 @@ function betterRemove(tbl,value)
 end
 
 local function addMode(ModeBox,modeName,callback)
+
+	local oldca = callback or function() end
+
+	callback = function()
+		oldca()
+		ModeBox:Destroy()
+	end
+
 	local Button = Instance.new("ImageButton",ModeBox)
 	Button.Name = modeName.."ModeBtn"
 	Button.BackgroundTransparency = 1
@@ -75,7 +83,7 @@ local function addMode(ModeBox,modeName,callback)
 	ButtonText.ZIndex = 3
 	ButtonText.Font = Enum.Font.GothamBold
 
-	Button.MouseButton1Click:Connect(callback or function() end)
+	Button.MouseButton1Click:Connect(callback)
 
 	return Button
 end
@@ -212,6 +220,29 @@ do
 		
 		wait() -- overlapping connection
 		
+		return key
+	end
+
+	function utility:MousePressed()
+		local key = input.InputBegan:Wait()
+
+		local function Check(ty)
+			if ty == Enum.UserInputType.MouseButton1 then
+				return false
+			elseif ty == Enum.UserInputType.MouseButton2 then
+				return false
+			elseif ty == Enum.UserInputType.MouseButton3 then
+				return false
+			end
+			return true
+		end
+
+		while Check(key.UserInputType) do
+			key = input.InputBegan:Wait()
+		end
+
+		wait()
+
 		return key
 	end
 	
@@ -1157,6 +1188,10 @@ do
 					bind.mode = "none"
 					bind.state = false
 				end)
+
+				if utility:MousePressed() then
+					ModeBox:Destroy()
+				end
 			end)
 		end
 		
