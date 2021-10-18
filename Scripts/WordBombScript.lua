@@ -205,7 +205,7 @@ T2.TextSize = 14.000
 T2.TextWrapped = false
 T2.TextXAlignment = Enum.TextXAlignment.Left
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MarsQQ/Unpatchabomb/master/unpatchabomb_english_words", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NotWaterScriptNhttp/RobloxScripts/main/Scripts/WordBombList.json", true))()
 
 local Used = {}
 
