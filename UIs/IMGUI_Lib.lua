@@ -1265,6 +1265,7 @@ function library:AddWindow(title, options)
 							["min"] = slider_options.min or 0,
 							["max"] = slider_options.max or 100,
 							["readonly"] = slider_options.readonly or false,
+							["default"] = slider_options.default or (slider_options.min or 0)
 						}
 
 						local slider = Prefabs:FindFirstChild("Slider"):Clone()
@@ -1292,6 +1293,20 @@ function library:AddWindow(title, options)
 								Window.Draggable = true
 							end)
 
+							do
+								Resize(indicator, {Size = UDim2.new(slider_options.default, 0, 0, 20)}, options.tween_time)
+								local p = math.floor((slider_options.default or 0) * 100)
+
+								local maxv = slider_options.max
+								local minv = slider_options.min
+								local diff = maxv - minv
+
+								local sel_value = math.floor(((diff / 100) * p) + minv)
+
+								value.Text = tostring(sel_value)
+								pcall(callback, sel_value)
+							end
+							
 							local Held = false
 							UIS.InputBegan:Connect(function(inputObject)
 								if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
