@@ -1095,6 +1095,15 @@ function library:AddWindow(title, options)
 		end)
 	end
 
+    do -- [Open / Close] Window2
+        function window_data:Hide()
+            script.Parent.Enabled = false
+        end
+        function window_data:Show()
+            script.Parent.Enabled = true
+        end
+    end
+
 	do -- UI Elements
 		local tabs = Window:FindFirstChild("Tabs")
 		local tab_selection = Window:FindFirstChild("TabSelection")
