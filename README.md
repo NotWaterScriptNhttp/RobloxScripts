@@ -16,7 +16,7 @@ List of all Functions:
 - setReadonly -- functions as setReadonly {Mt: userdata(metatable), readonly: boolean}
 - getNamecallMethod -- this allows you to get the namecall method on the called metatable some exploits don't have it so thats why this is here, this is not 100% accuryte {obj: Instance}
 - hookFunc -- this is just hookFunction but supports more exploits {old: function,new: function}
-- hookMetatable -- this will return the oldFunction for the hooked metamethod supports the hookMetamethod on synapse {metaMethod: string, func: function}
+- hookMetatable -- this will return the oldFunction for the hooked metamethod supports the hookmetamethod function {metaMethod: string, func: function}
 - Request -- makes http request easier to make on all exploits {data: table}
 - LoadURL -- is just loadstring with game:HttpGet so nothing that is compatibillity related {url: string}
 - LoadLocal -- loads a local file with loadstring {file: string}
