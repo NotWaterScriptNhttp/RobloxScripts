@@ -7,7 +7,7 @@ this is where i post my roblox scripts
 | [Exploit Support](#AddonForExploits) |
 | [Better Roblox JSON](#RobloxJSON) |
 
-# AddonForExploits.lua
+# AddonForExploits
 AddonForExploits is used for making compatibillity for more exploits with the same syntax.
 List of all Functions:
 - MyExploit -- returns what exploit your using {void}
@@ -27,7 +27,7 @@ List of all Functions:
 - LocalPlayer (not a function) -- returns the LocalPlayer
 - AddToGlobal -- add your function to the exploit's enviroment with the given name {name: string,data: any}
 
-# RobloxJSON.lua
+# RobloxJSON
 RobloxJSON is more like a configing system for people to use.
 Why is it better than roblox's JSON?
 because roblox's json formating cannot save Color3's and Key's.
