@@ -4,8 +4,8 @@ this is where i post my roblox scripts
 
 | Project info |
 | - |
-| [Exploit Support](#AddonForExploits.lua) |
-| [Better Roblox JSON](#RobloxJSON.lua) |
+| [Exploit Support](#AddonForExploits) |
+| [Better Roblox JSON](#RobloxJSON) |
 
 # AddonForExploits.lua
 AddonForExploits is used for making compatibillity for more exploits with the same syntax.
