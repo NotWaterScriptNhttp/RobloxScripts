@@ -31,6 +31,7 @@ List of all Functions:
 RobloxJSON is more like a configing system for people to use.
 Why is it better than roblox's JSON?
 because roblox's json formating cannot save Color3s, Vectors, etc...
+if the data type is not supported by the script creat an issue
 
 Why should i use it?
 because it allows you to save and load configs and even get or set them without running into any issues.
