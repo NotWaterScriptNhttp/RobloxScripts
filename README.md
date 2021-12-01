@@ -2,6 +2,11 @@
 
 this is where i post my roblox scripts
 
+| Project info |
+| - |
+| [Exploit Support](#AddonForExploits.lua) |
+| [Better Roblox JSON](#RobloxJSON.lua) |
+
 # AddonForExploits.lua
 AddonForExploits is used for making compatibillity for more exploits with the same syntax.
 List of all Functions:
@@ -17,6 +22,8 @@ List of all Functions:
 - LoadLocal -- loads a local file with loadstring {file: string}
 - OnDisconnect -- is called when some one leave's the game {func: function}
 - Exists -- is used to check if a file exists {string: path/file}
+- Base64 -- will return table {encode: func, decode: func}
+- Encryption -- will return table {encrypt: func, decrypt: func}
 - LocalPlayer (not a function) -- returns the LocalPlayer
 - AddToGlobal -- add your function to the exploit's enviroment with the given name {name: string,data: any}
 
@@ -24,5 +31,40 @@ List of all Functions:
 RobloxJSON is more like a configing system for people to use.
 Why is it better than roblox's JSON?
 because roblox's json formating cannot save Color3's and Key's.
+
 Why should i use it?
 because it allows you to save and load configs and even get or set them without running into any issues.
+
+Usage:
+```lua
+local configLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/NotWaterScriptNhttp/RobloxScripts/main/RobloxJSON.lua", true))() -- Loads the configLib
+local config = configLib.new() -- creates a new config
+
+local template = {
+  Foo = {
+    Bar = true
+  }
+} -- put your values here (Templates are used for the main getting/setting values so everything in template table will be used as your config)
+--This does not modify the template table. Template is just used as a struct of the config
+
+--you MUST provide a Template to make this Config System work
+config.LoadTemplate(template) -- takes only table as input, returns: none
+
+--also you might need to do config.SetLoadedAsTemplate() -- returns: none
+
+--To load configs do
+local cfgData = readfile(<YourConfigName>) or "{\"Foo\": {\"Bar\": true}}"
+config.LoadConfig(cfgData) -- takes only JSON string, returns: none
+
+--To save configs do
+config.SaveConfig(config.GetLoadedConfig() --[[ This might get removed in the next update ]]-- ) -- takes only table as input, return: string (JSON string)
+--To save it to a file use writefile or any other thing that can save strings
+
+--To get values out of the config do
+config.Get("Foo", "Bar") -- takes in string of ... (path to the value in the template table), returns: any
+config.Get("Foo").Bar -- does the same thing as above
+
+--To set values in the config do
+--Planning to add config.Set("Foo", "Bar") = false -- takes in string of ... (path to value in the template table), returns: none
+config.Set("Foo").Bar = false -- does the same thing as above
+```
